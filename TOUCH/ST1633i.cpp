@@ -15,7 +15,7 @@
 
 #include "bsp.h"
 #include "i2cbus.h"
-#include "sgtl5000codec.h"
+//#include "sgtl5000codec.h"
 
 //=============================================================================
 // Constructor and Destructor
@@ -34,7 +34,7 @@
 //      None.
 //
 //-----------------------------------------------------------------------------
-SGTL5000Codec::SGTL5000Codec(VOID)
+ST1633i::ST1633i(VOID)
 {
     m_bI2CInited = FALSE;
 
@@ -44,7 +44,7 @@ SGTL5000Codec::SGTL5000Codec(VOID)
     m_workMode = WORK_MODE_DUPLEX;
 
     // Initialize the I2C connection and get a handle
-    SGTL5000I2CInit();
+    ST1633iI2CInit();
 }
 
 //-----------------------------------------------------------------------------
@@ -60,11 +60,11 @@ SGTL5000Codec::SGTL5000Codec(VOID)
 //      None.
 //
 //-----------------------------------------------------------------------------
-SGTL5000Codec::~SGTL5000Codec(VOID)
+ST1633i::~ST1633i(VOID)
 {
     if (m_bI2CInited)
     {
-        SGTL5000I2CClose();
+        ST1633iI2CClose();
     }
 }
 
@@ -85,7 +85,7 @@ SGTL5000Codec::~SGTL5000Codec(VOID)
 //      Status.
 //
 //-----------------------------------------------------------------------------
-UINT32 SGTL5000Codec::SGTL5000I2CInit(VOID)
+UINT32 ST1633i::ST1633iI2CInit(VOID)
 {
     UINT32 uiStatus = SGTL5000_SUCCESS;
     DWORD dwFrequency = SGTL5000_I2C_SPEED;
@@ -107,7 +107,7 @@ UINT32 SGTL5000Codec::SGTL5000I2CInit(VOID)
     if (!I2CSetMasterMode(m_hI2C))
     {
         uiStatus = SGTL5000_I2C_OPERROR;
-        SGTL5000I2CClose();
+        ST1633iI2CClose();
         return uiStatus;
     }
     
@@ -140,7 +140,7 @@ UINT32 SGTL5000Codec::SGTL5000I2CInit(VOID)
 //      None.
 //
 //-----------------------------------------------------------------------------
-VOID SGTL5000Codec::SGTL5000I2CClose(VOID)
+VOID ST1633i::ST1633iI2CClose(VOID)
 {
     if (m_hI2C)
     {
@@ -168,7 +168,7 @@ VOID SGTL5000Codec::SGTL5000I2CClose(VOID)
 //      Status.
 //
 //-----------------------------------------------------------------------------
-UINT32 SGTL5000Codec::SGTL5000WriteRegister( UINT16 usRegNum, UINT16 usValue )
+UINT32 ST1633i::ST1633iWriteRegister( UINT16 usRegNum, UINT16 usValue )
 {    
     UINT32 uiStatus = SGTL5000_SUCCESS;
     I2C_TRANSFER_BLOCK I2CXferBlock;
@@ -226,7 +226,7 @@ UINT32 SGTL5000Codec::SGTL5000WriteRegister( UINT16 usRegNum, UINT16 usValue )
 //      Status.
 //
 //-----------------------------------------------------------------------------
-UINT32 SGTL5000Codec::SGTL5000ReadRegister( UINT16 usRegNum, UINT16* pusValue )
+UINT32 ST1633i::ST1633iReadRegister( UINT16 usRegNum, UINT16* pusValue )
 {
     UINT32 uiStatus = SGTL5000_SUCCESS;
     I2C_TRANSFER_BLOCK I2CXferBlock;
@@ -303,7 +303,7 @@ UINT32 SGTL5000Codec::SGTL5000ReadRegister( UINT16 usRegNum, UINT16* pusValue )
 //      Status.
 //
 //-----------------------------------------------------------------------------
-UINT32 SGTL5000Codec::SGTL5000ModifyRegister( UINT16 usRegNum, 
+UINT32 ST1633i::ST1633iModifyRegister( UINT16 usRegNum, 
                                UINT16 usMask, 
                                UINT16 usBitFieldValue )
 {
